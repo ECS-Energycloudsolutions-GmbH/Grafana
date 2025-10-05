@@ -12,6 +12,7 @@ build-docker:
     - docker
   stage: build
   script:
+    - chmod +x enercloud-build.sh
     - ./enercloud-build.sh
     - docker images | grep $HUB_ADDRESS
 
