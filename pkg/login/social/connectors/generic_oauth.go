@@ -398,6 +398,14 @@ func (s *SocialGenericOAuth) groupsToOrgRoles(groups []string) map[int64]org.Rol
 				continue
 			}
 
+			// Ignore if we got already a better role for the given org.
+			if _, ok := orgRoles[int64(orgId)]; ok {
+				fmt.Println("ID gefunden")
+				if orgRoles[int64(orgId)].Includes(org.RoleType(orgGroupSplit[1])) {
+					continue
+				}
+			}
+
 			// Transfer gathered info into OrgRoles map
 			orgRoles[int64(orgId)] = org.RoleType(orgGroupSplit[1])
 		}
@@ -409,7 +417,7 @@ func (s *SocialGenericOAuth) groupsToOrgRoles(groups []string) map[int64]org.Rol
 // postProcessUserInfo handles post-processing of user info (org roles, private email, etc.)
 func (s *SocialGenericOAuth) postProcessUserInfo(ctx context.Context, client *http.Client, userInfo *social.BasicUserInfo, externalOrgs []string) error {
 	if !s.info.SkipOrgRoleSync {
-		//userInfo.OrgRoles = s.orgRoleMapper.MapOrgRoles(s.orgMappingCfg, externalOrgs, userInfo.Role)
+		userInfo.OrgRoles = s.orgRoleMapper.MapOrgRoles(s.orgMappingCfg, externalOrgs, userInfo.Role)
 		userInfo.OrgRoles = s.groupsToOrgRoles(userInfo.Groups)
 
 		if s.info.RoleAttributeStrict && len(userInfo.OrgRoles) == 0 {
