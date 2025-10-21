@@ -15,10 +15,10 @@ build-docker:
     - chmod +x enercloud-build.sh
     - ./enercloud-build.sh
     - docker images | grep $HUB_ADDRESS
-  args:
-    - CI_PIPELINE_ID=0 # Build-Arg, mit Default
+    - docker build --build-arg CI_PIPELINE_ID=$CI_PIPELINE_ID
+
   environment:
-    - CI_PIPELINE_ID=${CI_PIPELINE_ID}     # Laufzeit-Env, mit Default
+    - CI_PIPELINE_ID=$CI_PIPELINE_ID    # Laufzeit-Env, mit Default
 
 push-image:
   tags:
