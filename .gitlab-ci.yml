@@ -15,10 +15,6 @@ build-docker:
     - chmod +x enercloud-build.sh
     - ./enercloud-build.sh
     - docker images | grep $HUB_ADDRESS
-    - echo $CI_PIPELINE_ID>>enercloud_version
-
-  # environment:
-  #   - CI_PIPELINE_ID=$CI_PIPELINE_ID    # Laufzeit-Env, mit Default
 
 push-image:
   tags:

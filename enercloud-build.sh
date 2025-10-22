@@ -5,6 +5,7 @@ fi
 
 # If a Pipeline ID exists, pass this to the build container
 if [ -n "$CI_PIPELINE_ID" ]; then
+  echo "CI_PIPELINE_ID=${CI_PIPELINE_ID}">>.env
   DOCKER_BUILDKIT=1 docker build --cpuset-cpus "0-11" --tag $HUB_ADDRESS:$CI_PIPELINE_ID --build-arg CI_PIPELINE_ID=$CI_PIPELINE_ID .
 else
   DOCKER_BUILDKIT=1 docker build --cpuset-cpus "0-11" --tag enercloud:dev .
