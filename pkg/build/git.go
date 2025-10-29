@@ -1,5 +1,9 @@
 package build
 
+import (
+	"os"
+)
+
 func getGitBranch() string {
 	v, err := runError("git", "rev-parse", "--abbrev-ref", "HEAD")
 	if err != nil {
@@ -9,18 +13,11 @@ func getGitBranch() string {
 }
 
 func getGitSha() string {
-	// data, err := OpenPackageJSON(".")
-	// if err != nil {
-	// 	return "package.json not found"
-	// }
-	// else {
-	// 	pipelineID, err := "lalala"
-	// }
 	// If there is a pipeline ID set, use this
-	// idstr, present := os.LookupEnv("CI_PIPELINE_ID")
-	// if present && idstr != "0" {
-	// 	return idstr
-	// }
+	idstr, present := os.LookupEnv("CI_PIPELINE_ID")
+	if present && idstr != "0" {
+		return idstr
+	}
 
 	v, err := runError("git", "rev-parse", "--short", "HEAD")
 	if err != nil {
