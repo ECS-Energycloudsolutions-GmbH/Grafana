@@ -8,12 +8,14 @@ import (
 	"net/http"
 	"net/mail"
 	"strconv"
+	"strings"
 
 	"golang.org/x/oauth2"
 
 	"github.com/grafana/grafana/pkg/apimachinery/identity"
 	"github.com/grafana/grafana/pkg/login/social"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
+	"github.com/grafana/grafana/pkg/services/org"
 	"github.com/grafana/grafana/pkg/services/ssosettings"
 	ssoModels "github.com/grafana/grafana/pkg/services/ssosettings/models"
 	"github.com/grafana/grafana/pkg/services/ssosettings/validation"
@@ -369,10 +371,55 @@ func (s *SocialGenericOAuth) extractUserGroups(userInfo *social.BasicUserInfo, d
 	}
 }
 
+func (s *SocialGenericOAuth) groupsToOrgRoles(groups []string) map[int64]org.RoleType {
+	orgRoles := make(map[int64]org.RoleType, 0)
+
+	if len(groups) > 0 {
+		// The structure of the group attribute is supposed to be as follows:
+		// <OrgId>:<RoleType> -> 1:admin 2:viewer [...]
+		for _, orgGroup := range groups {
+			// split the pairs apart
+			orgGroupSplit := strings.Fields(strings.ReplaceAll(orgGroup, ":", " "))
+			if len(orgGroupSplit) == 0 {
+				continue
+			}
+			orgId, err := strconv.Atoi(orgGroupSplit[0])
+			// Ignore if org ID is not an integer
+			if err != nil {
+				continue
+			}
+			// Ignore if no role is given
+			if len(orgGroupSplit[1]) == 0 {
+				continue
+			}
+
+			// Ignore if given role is not a valid/known role
+			if !org.RoleType(orgGroupSplit[1]).IsValid() {
+				continue
+			}
+
+			// Ignore if we got already a better role for the given org.
+			if _, ok := orgRoles[int64(orgId)]; ok {
+				fmt.Println("ID gefunden")
+				if orgRoles[int64(orgId)].Includes(org.RoleType(orgGroupSplit[1])) {
+					continue
+				}
+			}
+
+			// Transfer gathered info into OrgRoles map
+			orgRoles[int64(orgId)] = org.RoleType(orgGroupSplit[1])
+		}
+	}
+
+	return orgRoles
+}
+
 // postProcessUserInfo handles post-processing of user info (org roles, private email, etc.)
 func (s *SocialGenericOAuth) postProcessUserInfo(ctx context.Context, client *http.Client, userInfo *social.BasicUserInfo, externalOrgs []string) error {
 	if !s.info.SkipOrgRoleSync {
 		userInfo.OrgRoles = s.orgRoleMapper.MapOrgRoles(s.orgMappingCfg, externalOrgs, userInfo.Role)
+		userInfo.OrgRoles = s.groupsToOrgRoles(userInfo.Groups)
+
 		if s.info.RoleAttributeStrict && len(userInfo.OrgRoles) == 0 {
 			return errRoleAttributeStrictViolation.Errorf("could not evaluate any valid roles using IdP provided data")
 		}

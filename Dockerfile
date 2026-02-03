@@ -60,6 +60,10 @@ RUN yarn ${JS_YARN_BUILD_FLAG}
 # Golang build stage
 FROM ${GO_IMAGE} AS go-builder
 
+# Add pipeline id to container
+ARG CI_PIPELINE_ID=0
+ENV CI_PIPELINE_ID=$CI_PIPELINE_ID
+
 ARG COMMIT_SHA=""
 ARG BUILD_BRANCH=""
 ARG GO_BUILD_TAGS="oss"
