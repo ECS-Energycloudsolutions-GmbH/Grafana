@@ -5,64 +5,64 @@ import { NewThemeOptions } from '../createTheme';
  * very WIP state
  */
 
-const whiteBase = `210, 210, 220`;
-const secondaryBase = `195, 195, 245`;
+const whiteBase = `0, 0, 0`;
+const secondaryBase = `0, 139, 69`;
 
 //const brandMain = '#3d71d9';
 //const brandText = '#6e9fff';
-const brandMain = '#ff934d';
-const brandText = '#f99a5c';
-const disabledText = `rgba(${whiteBase}, 0.48)`;
+const brandMain = '#008B45';
+const brandText = '#F29725';
+const disabledText = `rgba(${whiteBase}, 0.38)`;
 
 const gloomTheme: NewThemeOptions = {
-  name: 'Gloom',
+  name: 'WertE',
   colors: {
-    mode: 'dark',
+    mode: 'light',
     border: {
       weak: `rgba(${whiteBase}, 0.12)`,
       medium: `rgba(${whiteBase}, 0.20)`,
-      strong: `rgba(${whiteBase}, 0.30)`,
+      strong: `rgba(${secondaryBase}, 0.30)`,
     },
-
     text: {
-      primary: `rgb(${whiteBase})`,
-      secondary: `rgba(${whiteBase}, 0.65)`,
-      disabled: disabledText,
-      link: brandText,
-      maxContrast: '#FFF',
+      primary: '#333333',
+      secondary: '#555555',
+      disabled: `rgba(${whiteBase}, 0.38)`,
+      link: brandMain,
+      maxContrast: '#000000',
     },
-
     primary: {
       main: brandMain,
       text: brandText,
       border: brandMain,
       name: 'primary',
     },
-
     secondary: {
-      main: `rgba(${secondaryBase}, 0.10)`,
-      shade: `rgba(${secondaryBase}, 0.14)`,
+      main: '#F5F5F5',
+      shade: '#E0E0E0',
       transparent: `rgba(${secondaryBase}, 0.08)`,
-      text: `rgba(${secondaryBase})`,
-      contrastText: `rgb(${secondaryBase})`,
-      border: `rgba(${secondaryBase}, 0.08)`,
+      text: '#333333',
+      contrastText: '#000000',
+      border: '#E0E0E0',
     },
-
+    info: {
+      main: '#F3921F',
+      text: '#F3921F',
+      border: '#F3921F',
+    },
     background: {
-      canvas: '#000',
-      primary: '#121118',
-      secondary: '#211e28',
-      elevated: '#211e28',
+      canvas: '#F5F5F5',
+      primary: '#FFFFFF',
+      secondary: '#FFFFFF',
+      elevated: '#FFFFFF',
     },
-
     action: {
-      hover: `rgba(${secondaryBase}, 0.07)`,
-      selected: `rgba(${secondaryBase}, 0.11)`,
+      hover: `rgba(${secondaryBase}, 0.08)`,
+      selected: `rgba(${secondaryBase}, 0.16)`,
       selectedBorder: brandMain,
-      focus: `rgba(${secondaryBase}, 0.07)`,
-      hoverOpacity: 0.05,
+      focus: `rgba(${secondaryBase}, 0.12)`,
+      hoverOpacity: 0.08,
       disabledText: disabledText,
-      disabledBackground: `rgba(${whiteBase}, 0.04)`,
+      disabledBackground: `rgba(${whiteBase}, 0.12)`,
       disabledOpacity: 0.38,
     },
 
