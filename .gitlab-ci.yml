@@ -74,7 +74,7 @@ deploy:
     - tags
     - main
   trigger:
-    project: enercloud/external/swarm/grafana-stack/grafana
+    project: enercloud/external/swarm/grafanastack/grafana
 
 deploy-testserver:
   stage: deploy
