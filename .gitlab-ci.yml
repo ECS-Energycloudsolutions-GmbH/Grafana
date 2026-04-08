@@ -1,5 +1,6 @@
 variables:
   HUB_ADDRESS: dockerhub.enercloud.org/grafana
+  HUB_TESTING_ADDRESS: dockerhub.ecsberlin.de/grafana
 
 stages:
   - build
@@ -81,11 +82,14 @@ deploy-testserver:
   when: manual
   tags:
     - docker
-  image:
-    dockerhub.enercloud.org/ssh-client:production
+  image: 
+    dockerhub.enercloud.org/sshclient:production
   variables:
     SSH_PRECONFIG: testserver
   script:
+    - docker build -t $HUB_TESTING_ADDRESS:$CI_PIPELINE_ID .
+    - docker push $HUB_TESTING_ADDRESS:$CI_PIPELINE_ID
+    - docker rmi $HUB_TESTING_ADDRESS:$CI_PIPELINE_ID
     - ssh $SSH_PRECONFIG [[ -f /home/op/swarm/grafana.yaml ]] && echo "File already exists, no overwrite" || (echo "swarm-stack-testserver.yaml is missing on testserver. Please run main project pipeline for testserver first." && exit 1)
-    - "ssh $SSH_PRECONFIG \"sed -i 's/\\(.*image: dockerhub\\.enercloud\\.org\\/grafana:\\).*/\\1'${CI_PIPELINE_ID}'/g' /home/op/swarm/grafana.yaml\""
+    - "ssh $SSH_PRECONFIG \"sed -i 's/\\(.*image: dockerhub\\.ecsberlin\\.de\\/grafana:\\).*/\\1'${CI_PIPELINE_ID}'/g' /home/op/swarm/grafana.yaml\""
     - ssh $SSH_PRECONFIG docker stack deploy --compose-file=/home/op/swarm/grafana.yaml grafana
