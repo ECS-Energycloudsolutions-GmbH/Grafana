@@ -11,6 +11,8 @@ export function getSelectableThemes() {
     allowedExtraThemes.push('tron');
     allowedExtraThemes.push('gloom');
     allowedExtraThemes.push('enercloud');
+    allowedExtraThemes.push('ecs');
+    allowedExtraThemes.push('werte');
   }
 
   return getBuiltInThemes(allowedExtraThemes);

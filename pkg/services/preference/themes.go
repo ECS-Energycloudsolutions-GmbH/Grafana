@@ -23,6 +23,8 @@ var themes = []ThemeDTO{
 	{ID: "zen", Type: "light", IsExtra: true},
 	{ID: "gloom", Type: "dark", IsExtra: true},
 	{ID: "enercloud", Type: "dark", IsExtra: true},
+	{ID: "ecs", Type: "light", IsExtra: true},
+	{ID: "werte", Type: "light", IsExtra: true},
 }
 
 func GetThemeByID(id string) *ThemeDTO {

@@ -11,3 +11,5 @@ export { default as victorian } from './victorian';
 export { default as zen } from './zen';
 export { default as gloom } from './gloom';
 export { default as enercloud } from './enercloud';
+export { default as ecs } from './ecs';
+export { default as werte } from './werte';
