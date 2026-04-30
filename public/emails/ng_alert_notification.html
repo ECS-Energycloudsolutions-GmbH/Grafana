@@ -120,19 +120,19 @@
   <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;"><mj-raw>
       {{ if $numberOfFiringInstance }}
     </mj-raw>
-    <strong>{{ $numberOfFiringInstance }} firing</strong> alert {{ $numberOfFiringInstance| plural "instance" "instances" }}
+    <strong>{{ $numberOfFiringInstance }}</strong> {{ $numberOfFiringInstance | plural "aktiver Alarm" "aktive Alarme" }}
     <mj-raw>
       {{ end }}
     </mj-raw>
     <mj-raw>
       {{ if and $numberOfFiringInstance $numberOfResolvedAlerts }}
-    </mj-raw> &nbsp;and&nbsp; <mj-raw>
+    </mj-raw> &nbsp;und&nbsp; <mj-raw>
       {{ end }}
     </mj-raw>
     <mj-raw>
       {{ if $numberOfResolvedAlerts }}
     </mj-raw>
-    <strong>{{ $numberOfResolvedAlerts }} resolved</strong> alert {{ $numberOfResolvedAlerts| plural "instance" "instances" }}
+    <strong>{{ $numberOfResolvedAlerts }}</strong> {{ $numberOfResolvedAlerts | plural "behobener Alarm" "behobene Alarme" }}
     <mj-raw>
       {{ end }}
     </mj-raw>
@@ -153,8 +153,8 @@
                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
                           <tbody>
                             <tr>
-                              <td style="width:200px;">
-                                <img alt src="https://grafana.com/static/assets/img/logo_new_transparent_light_400x100.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="200" height="auto">
+                              <td>
+                                <img alt src="{{ $.BrandLogoUrl }}" style="border:0;display:block;outline:none;text-decoration:none;height:50px;width:auto;font-size:13px;" height="50">
                               </td>
                             </tr>
                           </tbody>
@@ -185,21 +185,6 @@
                       <td align="left" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
                         <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;">
                           <h2>📁 {{ .GroupLabels.grafana_folder }} &rsaquo; {{ .GroupLabels.alertname }}</h2>
-                        </div>
-                      </td>
-                    </tr>
-                    {{ else if gt (len .GroupLabels.SortedPairs) 0 }}
-                    <tr>
-                      <td align="left" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
-                        <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;">
-                          <h2> 📁 Grouped by&nbsp; </h2>
-                          <mj-raw>
-                            {{ range .GroupLabels.SortedPairs }}
-                          </mj-raw>
-                          {{ .Name }}={{ .Value }}
-                          <mj-raw>
-                            {{ end }}
-                          </mj-raw>
                         </div>
                       </td>
                     </tr>
@@ -273,7 +258,7 @@
                     <tr>
                       <td align="left" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
                         <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;">
-                          <h3>🔥 {{ .Alerts.Firing | len }} firing instances</h3>
+                          <h3>🔥 {{ .Alerts.Firing | len }} {{ .Alerts.Firing | len | plural "aktiver Alarm" "aktive Alarme" }}</h3>
                         </div>
                       </td>
                     </tr>
@@ -299,6 +284,11 @@
                 <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
                   <tbody>
                     <tr>
+                      <td align="center" class="txt" style="font-size:0px;padding:15px 25px 0;word-break:break-word;">
+                        <div style="font-family: Inter, Helvetica, Arial; font-size: 16px; line-height: 130%; text-align: center; color: #000000;"><strong>{{ .Labels.alertname }}</strong></div>
+                      </td>
+                    </tr>
+                    <tr>
                       <td style="direction:ltr;font-size:0px;padding:10px 0;text-align:center;">
                         {{ __dangerouslyInjectHTML `<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:middle;width:200px;" ><![endif]-->` }}
                         <div class="mj-column-per-33-333333333333336 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:100%;">
@@ -310,7 +300,7 @@
                                     <tbody>
                                       <tr>
                                         <td align="center" bgcolor="#fae0e3" role="presentation" style="border:1px solid #ed8894;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#fae0e3;" valign="middle">
-                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: #fae0e3; color: #931625; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Firing </a>
+                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: #fae0e3; color: #931625; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Aktiv </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -326,7 +316,7 @@
                             <tbody>
                               <tr>
                                 <td align="center" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;"><strong>{{ .Labels.alertname }}</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;">&nbsp;</div>
                                 </td>
                               </tr>
                             </tbody>
@@ -343,8 +333,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View alert </a>
+                                        <td align="center" bgcolor="{{ $.BrandColor }}" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:{{ $.BrandColor }};" valign="middle">
+                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: {{ $.BrandColor }}; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Alarm anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -447,7 +437,7 @@
                               {{ if .Annotations.summary }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Summary</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Zusammenfassung</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -458,7 +448,7 @@
                               {{ end }}{{ if .Annotations.description }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Description</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Beschreibung</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -493,7 +483,7 @@
                             <tbody>
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Values</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Werte</strong></div>
                                 </td>
                               </tr>
                             </tbody>
@@ -574,7 +564,7 @@
                               {{ end }}{{ if (without .Annotations.SortedPairs.Names "description" "summary") }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Annotations</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Anmerkungen</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -620,8 +610,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .SilenceURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Silence </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid {{ $.BrandColor }};border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .SilenceURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: {{ $.BrandColor }}; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Stummschalten </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -642,8 +632,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .Annotations.runbook_url }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View runbook </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .Annotations.runbook_url }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Runbook anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -664,8 +654,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .DashboardURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View dashboard </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .DashboardURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Dashboard anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -686,8 +676,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .PanelURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View panel </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .PanelURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Panel anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -717,7 +707,7 @@
                             <tbody>
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #91929e;">Observed <strong>{{ ago .StartsAt }}</strong> before this notification was delivered, at <strong>{{ .StartsAt }}</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #91929e;">Aufgetreten vor <strong>{{ ago .StartsAt }}</strong> am <strong>{{ .StartsAt }}</strong></div>
                                 </td>
                               </tr>
                             </tbody>
@@ -762,7 +752,7 @@
                     <tr>
                       <td align="left" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
                         <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;">
-                          <h3>✅ {{ .Alerts.Resolved | len }} resolved instances</h3>
+                          <h3>✅ {{ .Alerts.Resolved | len }} {{ .Alerts.Resolved | len | plural "behobener Alarm" "behobene Alarme" }}</h3>
                         </div>
                       </td>
                     </tr>
@@ -788,6 +778,11 @@
                 <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
                   <tbody>
                     <tr>
+                      <td align="center" class="txt" style="font-size:0px;padding:15px 25px 0;word-break:break-word;">
+                        <div style="font-family: Inter, Helvetica, Arial; font-size: 16px; line-height: 130%; text-align: center; color: #000000;"><strong>{{ .Labels.alertname }}</strong></div>
+                      </td>
+                    </tr>
+                    <tr>
                       <td style="direction:ltr;font-size:0px;padding:10px 0;text-align:center;">
                         {{ __dangerouslyInjectHTML `<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:middle;width:200px;" ><![endif]-->` }}
                         <div class="mj-column-per-33-333333333333336 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:100%;">
@@ -799,7 +794,7 @@
                                     <tbody>
                                       <tr>
                                         <td align="center" bgcolor="#e5f2e4" role="presentation" style="border:1px solid #94cb8c;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#e5f2e4;" valign="middle">
-                                          <p rel="noopener" style="display:inline-block;background:#e5f2e4;color:#32602b;font-family:Inter, Helvetica, Arial;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:5px 12px;mso-padding-alt:0px;border-radius:3px;"> Resolved </p>
+                                          <p rel="noopener" style="display:inline-block;background:#e5f2e4;color:#32602b;font-family:Inter, Helvetica, Arial;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:5px 12px;mso-padding-alt:0px;border-radius:3px;"> Behoben </p>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -815,7 +810,7 @@
                             <tbody>
                               <tr>
                                 <td align="center" class="txt" style="font-size:0px;padding:0;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;"><strong>{{ .Labels.alertname }}</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;">&nbsp;</div>
                                 </td>
                               </tr>
                             </tbody>
@@ -832,8 +827,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View alert </a>
+                                        <td align="center" bgcolor="{{ $.BrandColor }}" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:{{ $.BrandColor }};" valign="middle">
+                                          <a href="{{ .GeneratorURL }}" rel="noopener" style="display: inline-block; background: {{ $.BrandColor }}; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Alarm anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -936,7 +931,7 @@
                               {{ if .Annotations.summary }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Summary</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Zusammenfassung</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -947,7 +942,7 @@
                               {{ end }}{{ if .Annotations.description }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Description</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Beschreibung</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -982,7 +977,7 @@
                             <tbody>
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Values</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Werte</strong></div>
                                 </td>
                               </tr>
                             </tbody>
@@ -1063,7 +1058,7 @@
                               {{ end }}{{ if (without .Annotations.SortedPairs.Names "description" "summary") }}
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Annotations</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #000000;"><strong>Anmerkungen</strong></div>
                                 </td>
                               </tr>
                               <tr>
@@ -1109,8 +1104,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .SilenceURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Silence </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid {{ $.BrandColor }};border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .SilenceURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: {{ $.BrandColor }}; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Stummschalten </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1131,8 +1126,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .Annotations.runbook_url }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View runbook </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .Annotations.runbook_url }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Runbook anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1153,8 +1148,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .DashboardURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View dashboard </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .DashboardURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Dashboard anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1175,8 +1170,8 @@
                                   <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                     <tbody>
                                       <tr>
-                                        <td align="center" bgcolor="#3D71D9" role="presentation" style="border:none;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:#3D71D9;" valign="middle">
-                                          <a href="{{ .PanelURL }}" rel="noopener" style="display: inline-block; background: #3D71D9; color: #ffffff; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> View panel </a>
+                                        <td align="center" bgcolor="transparent" role="presentation" style="border:1px solid #c4c5cc;border-radius:3px;cursor:auto;mso-padding-alt:5px 12px;background:transparent;" valign="middle">
+                                          <a href="{{ .PanelURL }}" rel="noopener" style="display: inline-block; white-space: nowrap; background: transparent; color: #444444; font-family: Inter, Helvetica, Arial; font-size: 13px; font-weight: normal; line-height: 120%; margin: 0; text-decoration: none; text-transform: none; padding: 5px 12px; mso-padding-alt: 0px; border-radius: 3px;" target="_blank"> Panel anzeigen </a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -1206,7 +1201,7 @@
                             <tbody>
                               <tr>
                                 <td align="left" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #91929e;">Observed <strong>{{ ago .StartsAt }}</strong> before this notification was delivered, at <strong>{{ .StartsAt }}</strong></div>
+                                  <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: left; color: #91929e;">Aufgetreten vor <strong>{{ ago .StartsAt }}</strong> am <strong>{{ .StartsAt }}</strong></div>
                                 </td>
                               </tr>
                             </tbody>
@@ -1248,9 +1243,16 @@
               <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background-color:transparent;vertical-align:top;" width="100%">
                   <tbody>
+                    {{ if $.BrandFooterNotice }}
+                    <tr>
+                      <td align="center" class="txt" style="font-size:0px;padding:10px 25px 0;word-break:break-word;">
+                        <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #91929e;">{{ $.BrandFooterNotice }}</div>
+                      </td>
+                    </tr>
+                    {{ end }}
                     <tr>
                       <td align="center" class="txt" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                        <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;">&copy; {{ now | date "2006" }} Grafana Labs. Sent by <a href="{{ .AppUrl }}" style="color: #6E9FFF;">Grafana v{{ .BuildVersion }}</a>.</div>
+                        <div style="font-family: Inter, Helvetica, Arial; font-size: 13px; line-height: 150%; text-align: center; color: #000000;">&copy; {{ now | date "2006" }} {{ $.BrandFooter }}.</div>
                       </td>
                     </tr>
                   </tbody>

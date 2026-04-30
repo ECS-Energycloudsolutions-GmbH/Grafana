@@ -1,6 +1,8 @@
 package notifications
 
 import (
+	"os"
+
 	"github.com/grafana/grafana/pkg/services/user"
 	"github.com/grafana/grafana/pkg/setting"
 )
@@ -31,6 +33,13 @@ type Message struct {
 	AttachedFiles    []*AttachedFile
 }
 
+func envOrDefault(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
 func setDefaultTemplateData(cfg *setting.Cfg, data map[string]any, u *user.User) {
 	data["AppUrl"] = cfg.AppURL
 	data["BuildVersion"] = setting.BuildVersion
@@ -40,6 +49,10 @@ func setDefaultTemplateData(cfg *setting.Cfg, data map[string]any, u *user.User)
 	if u != nil {
 		data["Name"] = u.NameOrFallback()
 	}
+	data["BrandColor"] = envOrDefault("GF_BRANDING_COLOR", "#FF6600")
+	data["BrandLogoUrl"] = envOrDefault("GF_BRANDING_LOGO_URL", "https://grafana.com/static/assets/img/logo_new_transparent_light_400x100.png")
+	data["BrandFooter"] = envOrDefault("GF_BRANDING_FOOTER", "Grafana Labs")
+	data["BrandFooterNotice"] = envOrDefault("GF_BRANDING_FOOTER_NOTICE", "")
 	dataCopy := map[string]any{}
 	for k, v := range data {
 		dataCopy[k] = v
