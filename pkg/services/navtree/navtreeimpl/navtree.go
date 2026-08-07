@@ -287,7 +287,7 @@ func (s *ServiceImpl) getProfileNode(c *contextmodel.ReqContext) *navtree.NavLin
 
 	children := []*navtree.NavLink{
 		{
-			Text: "Profile", Id: "profile/settings", Url: s.cfg.AppSubURL + "/profile", Icon: "sliders-v-alt",
+			Text: "Profile", Id: "profile/settings", Url: "/realms/pub/account/", Icon: "sliders-v-alt", Target: "_blank",
 		},
 	}
 
@@ -297,8 +297,8 @@ func (s *ServiceImpl) getProfileNode(c *contextmodel.ReqContext) *navtree.NavLin
 
 	if s.cfg.AddChangePasswordLink() {
 		children = append(children, &navtree.NavLink{
-			Text: "Change password", Id: "profile/password", Url: s.cfg.AppSubURL + "/profile/password",
-			Icon: "lock",
+			Text: "Change password", Id: "profile/password", Url: "/realms/pub/account/account-security/signing-in",
+			Icon: "lock", Target: "_blank",
 		})
 	}
 
